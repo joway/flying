@@ -1,0 +1,23 @@
+{
+  "name": "flying",
+  "version": "0.0.2",
+  "version_prefix": "",
+  "conditions": [],
+  "pre_release": [],
+  "git": {
+    "enable": true,
+    "remote": "origin",
+    "release_branch": "master"
+  },
+  "docker": {
+    "enable": false
+  },
+  "npm": {
+    "enable": false
+  },
+  "pypi": {
+    "enable": true,
+    "build_cmd": "python setup.py sdist",
+    "upload_cmd": "twine upload dist/*"
+  }
+}

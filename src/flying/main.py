@@ -1,0 +1,183 @@
+import os
+
+import fire
+
+from flying.config import FLYING_TEMPLATE
+from flying.utils.cmd import run_cmd
+from flying.utils.io import write_json_into_file, read_json_from_file
+from flying.utils.version import upgrade_version
+
+
+def log_info(msg):
+    print(msg)
+
+
+def log_error(msg):
+    print(msg)
+
+
+def git_tag_and_push(tag, remote):
+    tag_cmd = f'git tag {tag}'
+    success, stdout = run_cmd(tag_cmd)
+    if not success:
+        log_error(stdout)
+        return False
+    log_info(stdout)
+
+    push_cmd = f'git push {remote} {tag}'
+    success, stdout = run_cmd(push_cmd)
+    if not success:
+        log_error(stdout)
+        return False
+    log_info(stdout)
+    return True
+
+
+def docker_build_and_push(namespace, tag, dkf_path):
+    image_tag = f'{namespace}:{tag}'
+    build_cmd = f'docker build -f {dkf_path} -t {image_tag} .'
+    success, stdout = run_cmd(build_cmd)
+    if not success:
+        log_error(stdout)
+        return False
+    log_info(stdout)
+
+    push_cmd = f'docker push {image_tag}'
+    success, stdout = run_cmd(push_cmd)
+    if not success:
+        log_error(stdout)
+        return False
+    log_info(stdout)
+    return True
+
+
+def npm_upgrade_and_publish(tag, package_path):
+    package = read_json_from_file(package_path)
+    package['version'] = tag
+    write_json_into_file(package_path, package)
+
+    publish_cmd = 'npm publish'
+    success, stdout = run_cmd(publish_cmd)
+    if not success:
+        log_error(stdout)
+        return False
+    log_info(stdout)
+    return True
+
+
+def pypi_build_and_upload(build_cmd, upload_cmd):
+    success, stdout = run_cmd(build_cmd)
+    if not success:
+        log_error(stdout)
+        return False
+    log_info(stdout)
+
+    success, stdout = run_cmd(upload_cmd)
+    if not success:
+        log_error(stdout)
+        return False
+    log_info(stdout)
+    return True
+
+
+class Flying(object):
+    @staticmethod
+    def init(directory=os.getcwd()):
+        path = os.path.abspath(directory)
+        write_json_into_file(f'{path}/flying.json', FLYING_TEMPLATE)
+
+    @staticmethod
+    def release(directory=os.getcwd(), upgrade=False):
+        path = os.path.abspath(directory)
+        flying_path = f'{path}/flying.json'
+        flying_config = read_json_from_file(flying_path)
+
+        name = flying_config['name']
+        version = flying_config['version']
+        version_prefix = flying_config['version_prefix']
+        git = flying_config['git']
+        docker = flying_config['docker']
+        npm = flying_config['npm']
+        pypi = flying_config['pypi']
+        pre_release = flying_config['pre_release']
+        conditions = flying_config['conditions']
+
+        if upgrade:
+            version = upgrade_version(version)
+            flying_config['version'] = version
+        tag = version_prefix + version
+
+        # any condition should stdout at least one character to make sure that
+        # the project is ready for release
+        for condition in conditions:
+            success, out = run_cmd(condition)
+            if out == '':
+                log_error(f'Can not satisfy the condition: \n  {condition}')
+                return
+            if not success:
+                log_error(out)
+                return
+            log_info(out)
+
+        for pre_cmd in pre_release:
+            success, out = run_cmd(pre_cmd)
+            if not success:
+                log_error(out)
+                return
+            log_info(out)
+
+        if git['enable']:
+            log_info('triggered git release')
+            success = git_tag_and_push(
+                tag=tag,
+                remote=git['remote'],
+            )
+            if not success:
+                log_info('git release failed')
+            else:
+                log_info('git release success')
+        if docker['enable']:
+            log_info('triggered docker release')
+            success = docker_build_and_push(
+                namespace=docker['namespace'],
+                tag=tag,
+                dkf_path=docker['dkf_path'],
+            )
+            if not success:
+                log_info('docker release failed')
+            else:
+                log_info('docker release success')
+        if npm['enable']:
+            success = npm_upgrade_and_publish(
+                tag=tag,
+                package_path=npm['package_path'],
+            )
+            if not success:
+                log_info('npm release failed')
+            else:
+                log_info('npm release success')
+        if pypi['enable']:
+            success = pypi_build_and_upload(
+                build_cmd=pypi['build_cmd'],
+                upload_cmd=pypi['upload_cmd'],
+            )
+            if not success:
+                log_info('pypi release failed')
+            else:
+                log_info('pypi release success')
+
+        write_json_into_file(flying_path, flying_config)
+        if upgrade:
+            return f'upgraded and released project {name}'
+        return f'released project {name}'
+
+
+def main():
+    try:
+        fire.Fire(Flying)
+    except KeyboardInterrupt:
+        pass
+
+
+if __name__ == '__main__':
+    main()
