@@ -94,13 +94,13 @@ For Example , when you set :
   ],
 ```
 
-When your project has any un-commited file changes , it will be blocked .
+If your project has any un-commited file changes , it will be blocked .
 
 ### pre_release
 
 `pre_release` is a shell commonds list , it will be exec before release jobs start .
 
-For example , you can set :
+For example , you can set this line if you are using webpack :
 
 ```json
 "pre_release": ["npm run build"]
@@ -108,18 +108,17 @@ For example , you can set :
 
 ### git
 
-Push new version tag to git remote .
+Push new version tag to git remote server .
 
 ### docker
 
-You can change `namespace` to your own registry .
-
-`dkf_path` is your dockerfile's path relative to the project root dir .
+- `namespace`: For example , set it to 'joway/flying-example' , it will push docker image as `joway/flying-example:vx.x.x` (if version_prefix = "v") . 
+- `dkf_path` : Dockerfile's path relative to the project root dir .
 
 ### npm
 
-`package_path` is your package.json path relative to the project root dir .
+- `package_path`: package.json's path relative to the project root dir .
 
 ### pypi
 
-You can custom your own build && upload commond by set `build_cmd` and `upload_cmd`
+Custom your own build && upload commond by set `build_cmd` and `upload_cmd`
