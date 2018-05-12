@@ -51,10 +51,11 @@ def docker_build_and_push(namespace, tag, dkf_path):
     return True
 
 
-def npm_upgrade_and_publish(tag, package_path):
+def npm_upgrade_and_publish(tag, package_path, upgrade_version_enable=False):
     package = read_json_from_file(package_path)
     package['version'] = tag
-    write_json_into_file(package_path, package)
+    if upgrade_version_enable:
+        write_json_into_file(package_path, package)
 
     publish_cmd = 'npm publish'
     success, stdout = run_cmd(publish_cmd)
@@ -152,6 +153,7 @@ class Flying(object):
             success = npm_upgrade_and_publish(
                 tag=tag,
                 package_path=npm['package_path'],
+                upgrade_version_enable=npm['upgrade_version_enable'],
             )
             if not success:
                 log_info('npm release failed')
