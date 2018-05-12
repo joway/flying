@@ -124,6 +124,7 @@ Push new version tag to git remote server .
 ### npm
 
 - `package_path`: package.json's path relative to the project root dir .
+- `upgrade_version_enable`: if set `true` , it will automatically upgrade `package.json[version]` when exec `flying release --upgrade`
 
 ### pypi
 
