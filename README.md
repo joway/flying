@@ -1,7 +1,6 @@
 # Flying
 
 ![PyPI](https://img.shields.io/pypi/v/flying.svg)
-![PyPI](https://img.shields.io/pypi/pyversions/flying.svg)
 
 ## Purpose
 
