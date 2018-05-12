@@ -2,9 +2,9 @@ import os
 
 import fire
 
-from flying.config import FLYING_TEMPLATE
+from flying.config import FLYING_TEMPLATE, FLYING_DEFAULT
 from flying.utils.cmd import run_cmd
-from flying.utils.io import write_json_into_file, read_json_from_file
+from flying.utils.io import write_json_into_file, read_json_from_file, merge_json
 from flying.utils.version import upgrade_version
 
 
@@ -91,6 +91,7 @@ class Flying(object):
         path = os.path.abspath(directory)
         flying_path = f'{path}/flying.json'
         flying_config = read_json_from_file(flying_path)
+        flying_config = merge_json(flying_config, FLYING_DEFAULT)
 
         name = flying_config['name']
         version = flying_config['version']
@@ -177,6 +178,8 @@ def main():
         fire.Fire(Flying)
     except KeyboardInterrupt:
         pass
+    except Exception as e:
+        log_error(e)
 
 
 if __name__ == '__main__':
