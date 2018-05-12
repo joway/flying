@@ -16,6 +16,12 @@ Make release easy again .
 
 [https://github.com/joway/flying-example](https://github.com/joway/flying-example)
 
+## Install
+
+```shell
+pip install -U flying
+```
+
 ## Usage
 
 ### init
