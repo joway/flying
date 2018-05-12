@@ -10,6 +10,7 @@ FLYING_DEFAULT = {
     },
     'npm': {
         'enable': False,
+        'upgrade_version_enable': False,
         'package_path': './package.json',
     },
     'pypi': {
@@ -39,6 +40,7 @@ FLYING_TEMPLATE = {
     },
     'npm': {
         'enable': True,
+        'upgrade_version_enable': False,
         'package_path': './package.json',
     },
     'pypi': {
