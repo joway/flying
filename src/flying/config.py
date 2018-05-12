@@ -4,7 +4,6 @@ FLYING_DEFAULT = {
     'git': {
         'enable': False,
         'remote': 'origin',
-        'release_branch': 'master',
     },
     'docker': {
         'enable': False,
@@ -32,7 +31,6 @@ FLYING_TEMPLATE = {
     'git': {
         'enable': True,
         'remote': 'origin',
-        'release_branch': 'master',
     },
     'docker': {
         'enable': True,
