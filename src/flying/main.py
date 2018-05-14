@@ -7,6 +7,22 @@ from flying.utils.cmd import run_cmd
 from flying.utils.io import write_json_into_file, read_json_from_file, merge_json
 from flying.utils.version import upgrade_version
 
+COMMIT_TYPE_FLAGS = {
+    'feature': '✨feature',
+    'bugfix': '🐛bugfix',
+    'hotfix': '🚑hotfix',
+    'docs': '📚docs',
+    'style': '🎨style',
+    'refactor': '🏗️refactor',
+    'test': '✅test',
+    'chore': '🔨chore',
+    'release': '🎉release',
+    'text': '📝text',
+    'addlog': '🔉add log',
+    'dellog': '🔇delete log',
+}
+COMMIT_TYPE_CHOICE = COMMIT_TYPE_FLAGS.keys()
+
 
 def log_info(msg):
     print(msg)
@@ -74,6 +90,17 @@ def pypi_build_and_upload(build_cmd, upload_cmd):
     log_info(stdout)
 
     success, stdout = run_cmd(upload_cmd)
+    if not success:
+        log_error(stdout)
+        return False
+    log_info(stdout)
+    return True
+
+
+def git_commit(commit_type, commit_msg):
+    message = f'[{COMMIT_TYPE_FLAGS[commit_type]}]: {commit_msg}'
+    cmt_cmd = f'git commit -m "{message}"'
+    success, stdout = run_cmd(cmt_cmd)
     if not success:
         log_error(stdout)
         return False
@@ -173,6 +200,16 @@ class Flying(object):
         if upgrade:
             return f'upgraded and released project {name}'
         return f'released project {name}'
+
+    @staticmethod
+    def commit(commit_type, commit_msg):
+        if commit_type not in COMMIT_TYPE_CHOICE:
+            return f'commit type : {commit_type} is not included in \n{", ".join(COMMIT_TYPE_CHOICE)}'
+        success = git_commit(commit_type, commit_msg)
+        if not success:
+            log_info('git commit failed')
+        else:
+            log_info('git commit success')
 
 
 def main():
