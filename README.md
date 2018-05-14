@@ -49,18 +49,18 @@ eg:
 
 ```json
 {
-    'feature': '✨feature',
-    'bugfix': '🐛bugfix',
-    'hotfix': '🚑hotfix',
-    'docs': '📚docs',
-    'style': '🎨style',
-    'refactor': '🏗️refactor',
-    'test': '✅test',
-    'chore': '🔨chore',
-    'release': '🎉release',
-    'text': '📝text',
-    'addlog': '🔉add log',
-    'dellog': '🔇delete log',
+    "feature": "✨feature",
+    "bugfix": "🐛bugfix",
+    "hotfix": "🚑hotfix",
+    "docs": "📚docs",
+    "style": "🎨style",
+    "refactor": "🏗️refactor",
+    "test": "✅test",
+    "chore": "🔨chore",
+    "release": "🎉release",
+    "text": "📝text",
+    "addlog": "🔉add log",
+    "dellog": "🔇delete log",
 }
 ```
 

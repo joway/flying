@@ -8,18 +8,18 @@ from flying.utils.io import write_json_into_file, read_json_from_file, merge_jso
 from flying.utils.version import upgrade_version
 
 COMMIT_TYPE_FLAGS = {
-    'feature': '✨feature',
-    'bugfix': '🐛bugfix',
-    'hotfix': '🚑hotfix',
-    'docs': '📚docs',
-    'style': '🎨style',
-    'refactor': '🏗️refactor',
-    'test': '✅test',
-    'chore': '🔨chore',
-    'release': '🎉release',
-    'text': '📝text',
-    'addlog': '🔉add log',
-    'dellog': '🔇delete log',
+    "feature": "✨feature",
+    "bugfix": "🐛bugfix",
+    "hotfix": "🚑hotfix",
+    "docs": "📚docs",
+    "style": "🎨style",
+    "refactor": "🏗️refactor",
+    "test": "✅test",
+    "chore": "🔨chore",
+    "release": "🎉release",
+    "text": "📝text",
+    "addlog": "🔉add log",
+    "dellog": "🔇delete log",
 }
 COMMIT_TYPE_CHOICE = COMMIT_TYPE_FLAGS.keys()
 
