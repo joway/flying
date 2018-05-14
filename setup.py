@@ -10,7 +10,7 @@ def read(fname):
 
 setup(
     name='flying',
-    version='0.0.5',
+    version='0.0.6',
     keywords=('release', 'cli', 'docker', 'git', 'npm', 'pypi'),
     description='Cli tools for manage releases',
     license='MIT License',
