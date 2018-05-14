@@ -32,6 +32,39 @@ Create `flying.json` template
 flying init .
 ```
 
+### commit
+
+Beautify git commit message
+
+```shell
+flying commit [commit_type] [commit_message]
+
+eg:
+    flying commit feature 'some feature description'
+    ==>
+    git commit -m '[✨feature]: some feature description'
+```
+
+#### commit-type choice:
+
+```json
+{
+    'feature': '✨feature',
+    'bugfix': '🐛bugfix',
+    'hotfix': '🚑hotfix',
+    'docs': '📚docs',
+    'style': '🎨style',
+    'refactor': '🏗️refactor',
+    'test': '✅test',
+    'chore': '🔨chore',
+    'release': '🎉release',
+    'text': '📝text',
+    'addlog': '🔉add log',
+    'dellog': '🔇delete log',
+}
+```
+
+
 ### release
 
 Release current version which set in flying.json .
