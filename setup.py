@@ -26,7 +26,7 @@ setup(
     long_description=read('README.md'),
     install_requires=[
         'fire==0.1.3',
-        'twine==1.13.0',
+        'twine==2.0.0',
     ],
     entry_points={
         'console_scripts': [
