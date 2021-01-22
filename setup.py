@@ -25,7 +25,7 @@ setup(
     platforms='any',
     long_description=read('README.md'),
     install_requires=[
-        'fire==0.1.3',
+        'fire==0.4.0',
         'twine==3.0.0',
     ],
     entry_points={
